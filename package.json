@@ -1,0 +1,43 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed": "ts-node -r tsconfig-paths/register scripts/seed-data.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.15",
+    "@vercel/kv": "^3.0.0",
+    "dotenv": "^16.4.5",
+    "framer-motion": "^11.11.11",
+    "fs": "^0.0.1-security",
+    "lucide-react": "^0.454.0",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.0",
+    "next": "15.0.1",
+    "react": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "react-hook-form": "^7.53.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  }
+}
