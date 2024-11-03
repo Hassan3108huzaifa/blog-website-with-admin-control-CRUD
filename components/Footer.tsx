@@ -36,7 +36,7 @@ export default function Footer() {
               <a href="https://www.instagram.com/mr.hassanbhai/" target='_blank' className="text-gray-400 hover:text-white transition-colors duration-200">
                 <Instagram className="w-6 h-6" />
               </a>
-              <a href="https://www.linkedin.com/in/hassan-rj-148220295/" className="text-gray-400 hover:text-white transition-colors duration-200">
+              <a href="https://www.linkedin.com/in/hassan-rj-148220295/" target='_blank' className="text-gray-400 hover:text-white transition-colors duration-200">
                 <Linkedin className="w-6 h-6" />
               </a>
             </div>
