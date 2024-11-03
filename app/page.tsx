@@ -155,7 +155,7 @@ export default function Home() {
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="flex-grow mb-4 md:mb-0 md:mr-2 px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="flex-grow mb-4 text-gray-800 md:mb-0 md:mr-2 px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
               <button 
                 type="submit" 
