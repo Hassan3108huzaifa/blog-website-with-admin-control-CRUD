@@ -48,7 +48,7 @@ export default function RootLayout({
         <meta name="keywords" content="Blogafay, Premium Blog, Dynamic Blog Website, NextJS Blog, Web Development, HassanRJ, Blog Website, Tech Blog" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://blogafay.vercel.app" /> {/* Replace with your website URL */}
-        <meta property="og:image" content="/images/pic1-square.jpg" /> {/* Ensure this image is square */}
+        <meta property="og:image" content="/images/pic1.jpg" /> {/* Ensure this image is square */}
         <meta property="og:image:width" content="600" />
         <meta property="og:image:height" content="600" />
         <meta property="og:description" content="A fully functional and dynamic blog website made with 💖 by HassanRJ." />
