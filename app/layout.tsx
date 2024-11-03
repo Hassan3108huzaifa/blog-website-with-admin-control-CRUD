@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description: 'Blogafay: A fully functional and dynamic blog website made with 💖 by HassanRJ.',
     images: [
       {
-        url: '/images/pic1-square.jpg', // Ensure this is a square image (1:1 aspect ratio)
+        url: '/images/pic1.jpg', // Ensure this is a square image (1:1 aspect ratio)
         width: 600,
         height: 600,
         alt: 'Blogafay - Premium Blog by HassanRJ',
