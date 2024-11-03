@@ -6,17 +6,22 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Clock, Calendar, Brain, Zap, Globe } from 'lucide-react'
 import Image from 'next/image'
+import SkeletonCard from '@/components/CardSkeleton'
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     async function fetchPosts() {
+      setLoading(true)
       try {
         const fetchedPosts = await getPosts()
         setPosts(fetchedPosts)
       } catch (error) {
         console.error('Failed to fetch posts:', error)
+      } finally {
+        setLoading(false)
       }
     }
     fetchPosts()
@@ -43,51 +48,59 @@ export default function Home() {
           Explore the cutting-edge world of Artificial Intelligence through our expertly curated articles and insights.
         </motion.p>
         
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-20"
-        >
-          {posts.slice(0, 3).map((post, index) => (
-            <motion.div
-              key={post._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
-              className="bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl"
-            >
-              <div className="relative">
-                <Image
-                  src={post.coverImage}
-                  alt={post.title}
-                  className="w-full h-56 object-cover"
-                  width={500}
-                  height={200}
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                  <h2 className="text-xl font-semibold text-white">{post.title}</h2>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-20">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-20"
+          >
+            {posts.slice(0, 3).map((post, index) => (
+              <motion.div
+                key={post._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+                className="bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl"
+              >
+                <div className="relative">
+                  <Image
+                    src={post.coverImage}
+                    alt={post.title}
+                    className="w-full h-56 object-cover"
+                    width={500}
+                    height={200}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                    <h2 className="text-xl font-semibold text-white">{post.title}</h2>
+                  </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <div className="flex items-center text-sm text-gray-600 mb-4">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-                  <Clock className="w-4 h-4 ml-4 mr-2" />
-                  <span>{Math.ceil(post.content.length / 200)} min read</span>
+                <div className="p-6">
+                  <div className="flex items-center text-sm text-gray-600 mb-4">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                    <Clock className="w-4 h-4 ml-4 mr-2" />
+                    <span>{Math.ceil(post.content.length / 200)} min read</span>
+                  </div>
+                  <p className="text-gray-700 mb-4 line-clamp-3">{post.excerpt}</p>
+                  <Link 
+                    href={`/blog/${post.slug}`}
+                    className="inline-flex items-center text-gray-900 font-semibold hover:text-gray-700 transition-colors duration-200"
+                  >
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
                 </div>
-                <p className="text-gray-700 mb-4 line-clamp-3">{post.excerpt}</p>
-                <Link 
-                  href={`/blog/${post.slug}`}
-                  className="inline-flex items-center text-gray-900 font-semibold hover:text-gray-700 transition-colors duration-200"
-                >
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

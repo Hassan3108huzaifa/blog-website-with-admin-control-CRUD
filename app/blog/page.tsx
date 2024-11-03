@@ -1,20 +1,54 @@
+'use client'
 import Link from 'next/link'
 import { getPosts } from '@/lib/posts'
 import { CalendarDays, Clock, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
+import SkeletonCard from '@/components/CardSkeleton' // Import the SkeletonCard component
+import { useEffect, useState } from 'react'
 
 export const dynamic = 'force-dynamic'
 
-export default async function BlogsPage() {
-  try {
-    const posts = await getPosts()
+// Define the Post type based on your data structure
+interface Post {
+  _id: string;
+  title: string;
+  coverImage: string;
+  createdAt: string;
+  content: string;
+  excerpt: string;
+  slug: string;
+}
 
-    return (
-      <div className="bg-gray-50 min-h-screen py-12">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Our Latest Blogs</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
+export default function BlogsPage() {
+  const [posts, setPosts] = useState<Post[]>([]); // Initialize posts with the Post type
+  const [loading, setLoading] = useState<boolean>(true); // Initialize loading state
+
+  useEffect(() => {
+    async function fetchPosts() {
+      setLoading(true); // Set loading to true when fetching starts
+      try {
+        const fetchedPosts = await getPosts(); // Fetch posts
+        setPosts(fetchedPosts); // Set fetched posts
+      } catch (error) {
+        console.error('Error in BlogsPage:', error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    }
+    fetchPosts();
+  }, []);
+
+  return (
+    <div className="bg-gray-50 min-h-screen py-12">
+      <div className="container mx-auto px-4">
+        <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Our Latest Blogs</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {loading ? ( // Show skeletons if loading is true
+            Array.from({ length: 3 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))
+          ) : (
+            posts.map((post) => (
               <div key={post._id} className="bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
                 <Image 
                   src={post.coverImage} 
@@ -41,20 +75,10 @@ export default async function BlogsPage() {
                   </Link>
                 </div>
               </div>
-            ))}
-          </div>
+            ))
+          )}
         </div>
       </div>
-    )
-  } catch (error) {
-    console.error('Error in BlogsPage:', error);
-    return (
-      <div className="bg-gray-50 min-h-screen py-12">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Our Latest Blogs</h1>
-          <p className="text-center text-red-500">Sorry, we couldn't load the blog posts at this time. Please try again later.</p>
-        </div>
-      </div>
-    )
-  }
+    </div>
+  )
 }
