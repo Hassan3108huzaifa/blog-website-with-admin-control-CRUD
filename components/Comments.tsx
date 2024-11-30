@@ -17,7 +17,7 @@ type CommentFormData = {
   author: string
 }
 
-const MAX_NAME_LENGTH = 50
+const MAX_NAME_LENGTH = 30
 const MAX_COMMENT_LENGTH = 500
 
 export default function Comments({ postId, slug }: { postId: string, slug: string }) {
@@ -107,13 +107,17 @@ export default function Comments({ postId, slug }: { postId: string, slug: strin
               <div className="flex flex-wrap items-center mb-2 sm:mb-4">
                 <div className="flex items-center mr-auto mb-2 sm:mb-0">
                   <User className="w-5 h-5 text-gray-600 mr-2 flex-shrink-0" />
-                  <span className="font-semibold text-gray-900 break-all">{comment.author}</span>
+                  <span className="font-semibold text-gray-900 break-all max-w-[200px] truncate">
+                    {comment.author}
+                  </span>
                 </div>
                 <span className="text-sm text-gray-600 w-full sm:w-auto">
                   {new Date(comment.createdAt).toLocaleDateString()}
                 </span>
               </div>
-              <p className="text-gray-800 break-words">{comment.content}</p>
+              <p className="text-gray-800 break-words whitespace-pre-wrap overflow-hidden">
+                {comment.content}
+              </p>
             </div>
           ))
         ) : (
