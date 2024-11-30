@@ -17,6 +17,9 @@ type CommentFormData = {
   author: string
 }
 
+const MAX_NAME_LENGTH = 50
+const MAX_COMMENT_LENGTH = 500
+
 export default function Comments({ postId, slug }: { postId: string, slug: string }) {
   const [comments, setComments] = useState<Comment[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -55,29 +58,41 @@ export default function Comments({ postId, slug }: { postId: string, slug: strin
   }, [postId, reset, fetchComments])
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-2xl mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <input
-            {...register('author', { required: 'Name is required' })}
+            {...register('author', { 
+              required: 'Name is required',
+              maxLength: {
+                value: MAX_NAME_LENGTH,
+                message: `Name must be ${MAX_NAME_LENGTH} characters or less`
+              }
+            })}
             className="text-gray-800 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
             placeholder="Your name"
           />
-          {errors.author && <p className="mt-1 text-red-600">{errors.author.message}</p>}
+          {errors.author && <p className="mt-1 text-red-600 text-sm">{errors.author.message}</p>}
         </div>
         <div>
           <textarea
-            {...register('content', { required: 'Comment is required' })}
+            {...register('content', { 
+              required: 'Comment is required',
+              maxLength: {
+                value: MAX_COMMENT_LENGTH,
+                message: `Comment must be ${MAX_COMMENT_LENGTH} characters or less`
+              }
+            })}
             className="text-gray-800 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
             placeholder="Write your comment..."
             rows={4}
           />
-          {errors.content && <p className="mt-1 text-red-600">{errors.content.message}</p>}
+          {errors.content && <p className="mt-1 text-red-600 text-sm">{errors.content.message}</p>}
         </div>
-        {submitError && <p className="text-red-600">{submitError}</p>}
+        {submitError && <p className="text-red-600 text-sm">{submitError}</p>}
         <button 
           type="submit" 
-          className="flex items-center justify-center w-full md:w-auto px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-200"
+          className="flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-200"
           disabled={isSubmitting}
         >
           <Send className="w-4 h-4 mr-2" />
@@ -88,15 +103,17 @@ export default function Comments({ postId, slug }: { postId: string, slug: strin
       <div className="space-y-6">
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <div key={comment._id} className="bg-gray-50 p-6 rounded-lg shadow-sm">
-              <div className="flex items-center mb-4">
-                <User className="w-6 h-6 text-gray-600 mr-2" />
-                <span className="font-semibold text-gray-900">{comment.author}</span>
-                <span className="text-sm text-gray-600 ml-auto">
+            <div key={comment._id} className="bg-gray-50 p-4 sm:p-6 rounded-lg shadow-sm">
+              <div className="flex flex-wrap items-center mb-2 sm:mb-4">
+                <div className="flex items-center mr-auto mb-2 sm:mb-0">
+                  <User className="w-5 h-5 text-gray-600 mr-2 flex-shrink-0" />
+                  <span className="font-semibold text-gray-900 break-all">{comment.author}</span>
+                </div>
+                <span className="text-sm text-gray-600 w-full sm:w-auto">
                   {new Date(comment.createdAt).toLocaleDateString()}
                 </span>
               </div>
-              <p className="text-gray-800">{comment.content}</p>
+              <p className="text-gray-800 break-words">{comment.content}</p>
             </div>
           ))
         ) : (
@@ -106,3 +123,4 @@ export default function Comments({ postId, slug }: { postId: string, slug: strin
     </div>
   )
 }
+
