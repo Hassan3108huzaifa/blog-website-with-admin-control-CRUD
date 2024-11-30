@@ -17,7 +17,7 @@ type CommentFormData = {
   author: string
 }
 
-const MAX_NAME_LENGTH = 30
+const MAX_NAME_LENGTH = 24
 const MAX_COMMENT_LENGTH = 500
 
 export default function Comments({ postId, slug }: { postId: string, slug: string }) {
